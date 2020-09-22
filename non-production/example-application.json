@@ -1,0 +1,11 @@
+{
+  "name": "example-application",
+  "email": "example-application@digital.justice.gov.uk",
+  "environments": ["dev", "stage", "uat", "test"],
+  "tags": {
+    "business-unit": "Platforms",
+    "application": "example-application",
+    "is-production": false,
+    "owner": "<Example Application Owner>: example-application@digital.justice.gov.uk"
+  }
+}
