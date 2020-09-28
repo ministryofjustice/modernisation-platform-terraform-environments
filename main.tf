@@ -1,6 +1,4 @@
-provider "aws" {
-  region = var.region
-}
+provider "aws" {}
 
 locals {
   applications = flatten([
