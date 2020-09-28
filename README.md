@@ -1,15 +1,32 @@
-# Ministry of Justice Template Repository
+# modernisation-platform-terraform-environments
 
-Use this template to [create a repository] with the default initial files for a Ministry of Justice Github repository, including:
+This repository holds a Terraform module that creates organisational units and accounts for environments.
 
-* The correct LICENSE
-* Github actions
-* .gitignore file
+## Usage
+```
+module "environments" {
+  source                             = "github.com/ministryofjustice/modernisation-platform-terraform-environments"
+  environment_types                  = ["production", "non-production"]
+  environment_directory              = "./environments"
+  environment_parent_organisation_id = "ou-123456789"
+  environment_prefix                 = "modernisation-platform"
+  region                             = "eu-west-2"
+}
+```
 
-Once you have created your repository, please:
+## Inputs
+|      Name     |               Description              |  Type  | Default | Required |
+|:-------------:|:--------------------------------------:|:------:|:-------:|----------|
+| environment_types | Environment types (or subfolders) in the environments directory | list | n/a     | yes      |
+| environment_directory | Directory path for environment definitions | string | n/a     | yes      |
+| environment_parent_organisation_id | Organisation ID for newly configured environments to sit within | string | n/a     | yes      |
+| environment_prefix | Prefix for all new environment and account names | string | n/a     | yes      |
+| region | Region to run the module in | string | n/a     | yes      |
 
-* Edit the copy of this README.md file to document your project
-* Grant permissions to the appropriate MoJ teams
-* Setup branch protection
+## Outputs
+| Name                    | Description                                | Sensitive |
+|-------------------------|--------------------------------------------|-----------|
+| environment_account_ids | Account IDs for the newly created accounts | Yes       |
 
-[create a repository]: https://github.com/ministryofjustice/template-repository/generate
+## Looking for issues?
+If you're looking to raise an issue with this module, please create a new issue in the [Modernisation Platform repository](https://github.com/ministryofjustice/modernisation-platform/issues).
