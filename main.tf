@@ -12,8 +12,8 @@ locals {
         for environment in application.environments : {
           name    = "${application.name}-${environment}"
           part_of = application.name
-          tags    = merge(application.tags, {
-            is-production = (environment == "production") ? true : false
+          tags = merge(application.tags, {
+            is-production    = (environment == "production") ? true : false
             environment-name = environment
           })
         }
