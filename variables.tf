@@ -1,8 +1,3 @@
-variable "environment_types" {
-  description = "Environment types (or subfolders) in the environments directory"
-  type        = list
-}
-
 variable "environment_directory" {
   description = "Directory path for environment definitions"
   type        = string
