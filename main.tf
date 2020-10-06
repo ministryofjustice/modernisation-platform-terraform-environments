@@ -1,6 +1,6 @@
 locals {
   definitions = [
-    for file in fileset("${var.environment_directory}", "*.json") :
+    for file in fileset(var.environment_directory, "*.json") :
     jsondecode(file("${var.environment_directory}/${file}"))
   ]
   applications = {
