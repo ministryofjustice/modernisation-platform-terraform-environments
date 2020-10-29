@@ -22,7 +22,7 @@ module "environments" {
 ## Outputs
 | Name                    | Description                                | Sensitive |
 |-------------------------|--------------------------------------------|-----------|
-| environment_account_ids | Account IDs for the newly created accounts | Yes       |
+| environment_account_ids | Account IDs for the newly created accounts | yes       |
 
 ## Looking for issues?
 If you're looking to raise an issue with this module, please create a new issue in the [Modernisation Platform repository](https://github.com/ministryofjustice/modernisation-platform/issues).
