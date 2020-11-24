@@ -39,4 +39,11 @@ resource "aws_organizations_account" "accounts" {
   iam_user_access_to_billing = "ALLOW"
   parent_id                  = aws_organizations_organizational_unit.applications[each.value.part_of].id
   tags                       = each.value.tags
+
+  # Changing the name or email forces a replacement of the account,
+  # which means the AWS account will be detached from the organisation,
+  # so we want to ignore any of those changes
+  lifecycle {
+    ignore_changes = [name, email]
+  }
 }
