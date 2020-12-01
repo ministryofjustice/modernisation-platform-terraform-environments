@@ -1,7 +1,8 @@
 locals {
   definitions = [
-    for file in fileset(var.environment_directory, "*.json") :
-    jsondecode(file("${var.environment_directory}/${file}"))
+    for file in fileset(var.environment_directory, "*.json") : merge({
+      name = replace(file, ".json", "")
+    }, jsondecode(file("${var.environment_directory}/${file}")))
   ]
   applications = {
     organization_units = [
