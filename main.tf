@@ -11,11 +11,11 @@ locals {
     accounts = flatten([
       for application in local.definitions : [
         for environment in application.environments : {
-          name    = "${application.name}-${environment}"
+          name    = "${application.name}-${environment.name}"
           part_of = application.name
           tags = merge(application.tags, {
-            is-production    = (environment == "production") ? true : false
-            environment-name = environment
+            is-production    = (environment.name == "production") ? true : false
+            environment-name = environment.name
           })
         }
       ]
