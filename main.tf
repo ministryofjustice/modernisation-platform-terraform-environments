@@ -8,11 +8,11 @@ locals {
   applications = {
     organization_units = [
       for application in local.definitions : {
-      application_name = application.name
-      type             = application.account-type
+        application_name = application.name
+        type             = application.account-type
       }
     ]
-    
+
     accounts = flatten([
       for application in local.definitions : [
         for environment in application.environments : {
@@ -62,11 +62,11 @@ resource "aws_organizations_organizational_unit" "platforms-and-architecture-mod
 
 # Create each application an Organizational Unit
 resource "aws_organizations_organizational_unit" "applications" {
-  for_each = {for idx, query in local.applications.organization_units: query.application_name => query}
+  for_each = { for idx, query in local.applications.organization_units : query.application_name => query }
 
   name      = "${var.environment_prefix}-${each.value.application_name}"
   parent_id = each.value.type == "core" ? aws_organizations_organizational_unit.platforms-and-architecture-modernisation-platform-core.id : each.value.type == "member" ? aws_organizations_organizational_unit.platforms-and-architecture-modernisation-platform-member.id : aws_organizations_organizational_unit.platforms-and-architecture-modernisation-platform-member-unrestricted.id
- }
+}
 
 
 # Create each application's environments an account within their own Organizational Unit
@@ -81,7 +81,7 @@ resource "aws_organizations_account" "accounts" {
   iam_user_access_to_billing = "ALLOW"
   parent_id                  = aws_organizations_organizational_unit.applications[each.value.part_of].id
 
-  tags                       = each.value.tags
+  tags = each.value.tags
 
   # Changing the name or email forces a replacement of the account,
   # which means the AWS account will be detached from the organisation,
