@@ -42,7 +42,7 @@ locals {
       ]
     ])
 
-    blacklist_nuke_accounts = flatten([
+    blocklist_nuke_accounts = flatten([
       for application in local.definitions : [
         for environment in application.environments : {
           name = "${application.name}-${environment.name}"

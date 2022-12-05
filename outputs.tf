@@ -19,10 +19,10 @@ output "environment_rebuild_after_nuke_accounts" {
   description = "List of rebuild-after-autonuke account names."
 }
 
-output "environment_nuke_blacklist_accounts" {
+output "environment_nuke_blocklist_accounts" {
   sensitive = true
-  value = local.applications.blacklist_nuke_accounts[*].name
-  description = "List of account names blacklisted from autonuke."
+  value = local.applications.blocklist_nuke_accounts[*].name
+  description = "List of account names blocklisted from autonuke."
 }
 
 output "modernisation_platform_core_ou_id" {
