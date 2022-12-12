@@ -26,7 +26,7 @@ locals {
       ]
     ])
 
-    nuke_accts = flatten([
+    nuke_accounts = flatten([
       for application in local.definitions : [
         for environment in application.environments : [
           for a in try(environment.access, []) :
