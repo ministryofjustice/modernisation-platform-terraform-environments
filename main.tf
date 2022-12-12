@@ -26,21 +26,22 @@ locals {
       ]
     ])
 
-    nuke_accounts = flatten([
+    nuke_accts = flatten([
       for application in local.definitions : [
         for environment in application.environments : [
           for a in try(environment.access, []) :
           "${application.name}-${environment.name}"
-          if application.account-type == "member" && environment.name == "development" && try(a.level, "undefined") == "sandbox" && try(a.nuke, "include") != "exclude"
+          if application.account-type == "member" && environment.name == "development" && try(a.level, "undefined") == "sandbox" && !contains([for acc in environment.access : try(acc.nuke, "include") if try(acc.level, "undefined") == "sandbox"], "exclude")
         ]
     ]])
+
 
     rebuild_after_nuke_accounts = flatten([
       for application in local.definitions : [
         for environment in application.environments : [
           for a in try(environment.access, []) :
           "${application.name}-${environment.name}"
-          if application.account-type == "member" && environment.name == "development" && try(a.level, "undefined") == "sandbox" && try(a.nuke, "include") == "rebuild"
+          if application.account-type == "member" && environment.name == "development" && try(a.level, "undefined") == "sandbox" && try(a.nuke, "include") == "rebuild" && !contains([for acc in environment.access : try(acc.nuke, "include") if try(acc.level, "undefined") == "sandbox"], "exclude")
         ]
       ]
     ])
@@ -48,8 +49,8 @@ locals {
     blocklist_nuke_accounts = flatten([
       for application in local.definitions : [
         for environment in application.environments :
-          "${application.name}-${environment.name}"
-          if environment.name == "production" || environment.name == "preproduction" || startswith(application.name, "core")
+        "${application.name}-${environment.name}"
+        if environment.name == "production" || environment.name == "preproduction" || startswith(application.name, "core")
       ]
     ])
   }
