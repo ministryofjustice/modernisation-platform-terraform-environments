@@ -9,19 +9,19 @@ output "environment_account_ids" {
 
 output "environment_nuke_accounts" {
   sensitive   = true
-  value       = local.applications.nuke_accounts[*].name
+  value       = distinct(local.applications.nuke_accounts)
   description = "List of autonuke account names."
 }
 
 output "environment_rebuild_after_nuke_accounts" {
   sensitive   = true
-  value       = local.applications.rebuild_after_nuke_accounts[*].name
+  value       = distinct(local.applications.rebuild_after_nuke_accounts)
   description = "List of rebuild-after-autonuke account names."
 }
 
 output "environment_nuke_blocklist_accounts" {
   sensitive   = true
-  value       = local.applications.blocklist_nuke_accounts[*].name
+  value       = local.applications.blocklist_nuke_accounts
   description = "List of account names blocklisted from autonuke."
 }
 
