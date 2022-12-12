@@ -28,25 +28,28 @@ locals {
 
     nuke_accounts = flatten([
       for application in local.definitions : [
-        for environment in application.environments : {
-          name = "${application.name}-${environment.name}"
-        } if application.account-type == "member" && environment.name == "development" && try(environment.access[0].level, "undefined") == "sandbox" && try(environment.access[0].nuke, "include") != "exclude"
-      ]
-    ])
+        for environment in application.environments : [
+          for a in try(environment.access, []) :
+          "${application.name}-${environment.name}"
+          if application.account-type == "member" && environment.name == "development" && try(a.level, "undefined") == "sandbox" && try(a.nuke, "include") != "exclude"
+        ]
+    ]])
 
     rebuild_after_nuke_accounts = flatten([
       for application in local.definitions : [
-        for environment in application.environments : {
-          name = "${application.name}-${environment.name}"
-        } if application.account-type == "member" && environment.name == "development" && try(environment.access[0].level, "undefined") == "sandbox" && try(environment.access[0].nuke, "include") == "rebuild"
+        for environment in application.environments : [
+          for a in try(environment.access, []) :
+          "${application.name}-${environment.name}"
+          if application.account-type == "member" && environment.name == "development" && try(a.level, "undefined") == "sandbox" && try(a.nuke, "include") == "rebuild"
+        ]
       ]
     ])
 
     blocklist_nuke_accounts = flatten([
       for application in local.definitions : [
-        for environment in application.environments : {
-          name = "${application.name}-${environment.name}"
-        } if environment.name == "production" || environment.name == "preproduction" || startswith(application.name, "core")
+        for environment in application.environments :
+          "${application.name}-${environment.name}"
+          if environment.name == "production" || environment.name == "preproduction" || startswith(application.name, "core")
       ]
     ])
   }
