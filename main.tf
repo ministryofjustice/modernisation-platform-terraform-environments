@@ -115,6 +115,6 @@ resource "aws_organizations_account" "accounts" {
   # which means the AWS account will be detached from the organisation,
   # so we want to ignore any of those changes
   lifecycle {
-    ignore_changes = [name, email]
+    ignore_changes = [name, email, iam_user_access_to_billing]
   }
 }
