@@ -19,16 +19,16 @@ jobs:
           - ubuntu-latest
     steps:
       - name: Checkout source code
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           token: '${{ secrets.GITHUB_TOKEN }}'
           fetch-depth: 0
       - name: Cache plugin dir
-        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4.0.2
+        uses: actions/cache@d4323d4df104b026a6aa633fdb11d772146be0bf # v4.2.2
         with:
           path: ~/.tflint.d/plugins
           key: '${{ matrix.os }}-tflint-${{ hashFiles(''.tflint.hcl'') }}'
-      - uses: terraform-linters/setup-tflint@19a52fbac37dacb22a09518e4ef6ee234f2d4987 # v4.0.0
+      - uses: terraform-linters/setup-tflint@90f302c255ef959cbfb4bd10581afecdb7ece3e6 # v4.1.1
         name: Setup TFLint
         with:
           tflint_version: latest
@@ -38,7 +38,7 @@ jobs:
         run: tflint --disable-rule=terraform_unused_declarations --format sarif > tflint.sarif
       - name: Upload SARIF file
         if: success() || failure()
-        uses: github/codeql-action/upload-sarif@4dd16135b69a43b6c8efb853346f8437d92d3c93 # v3.26.6
+        uses: github/codeql-action/upload-sarif@6bb031afdd8eb862ea3fc1848194185e076637e5 # v3.28.11
         with:
           sarif_file: tflint.sarif
   tfsec:
@@ -50,7 +50,7 @@ jobs:
       security-events: write
     steps:
       - name: Clone repo
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           token: '${{ secrets.GITHUB_TOKEN }}'
           fetch-depth: 0
@@ -60,7 +60,7 @@ jobs:
           additional_args: '--format sarif --out tfsec.sarif --exclude aws-ssm-secret-use-customer-key,github-repositories-private,aws-vpc-no-excessive-port-access,github-repositories-require-signed-commits'
       - name: Upload SARIF file
         if: success() || failure()
-        uses: github/codeql-action/upload-sarif@4dd16135b69a43b6c8efb853346f8437d92d3c93 # v3.26.6
+        uses: github/codeql-action/upload-sarif@6bb031afdd8eb862ea3fc1848194185e076637e5 # v3.28.11
         with:
           sarif_file: tfsec.sarif
   checkov:
@@ -72,13 +72,13 @@ jobs:
       security-events: write
     steps:
       - name: Checkout repo
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           token: '${{ secrets.GITHUB_TOKEN }}'
           fetch-depth: 0
       - name: Run Checkov action
         id: checkov
-        uses: bridgecrewio/checkov-action@64296236994261f657e33a40ddbeb06a4b8e9747 # v12.2867.0
+        uses: bridgecrewio/checkov-action@29f9805565fcb000a741fb8d4583a9dd77cc1067 # v12.2973.0
         with:
           directory: ./
           framework: terraform
@@ -87,6 +87,6 @@ jobs:
           skip_check: CKV_GIT_1,CKV_AWS_126,CKV2_AWS_38,CKV2_AWS_39
       - name: Upload SARIF file
         if: success() || failure()
-        uses: github/codeql-action/upload-sarif@4dd16135b69a43b6c8efb853346f8437d92d3c93 # v3.26.6
+        uses: github/codeql-action/upload-sarif@6bb031afdd8eb862ea3fc1848194185e076637e5 # v3.28.11
         with:
           sarif_file: ./checkov.sarif
