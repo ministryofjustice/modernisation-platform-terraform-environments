@@ -103,7 +103,7 @@ resource "aws_organizations_organizational_unit" "applications" {
 resource "aws_organizations_account" "accounts" {
   for_each = {
     for account in local.applications.accounts : account.name => merge(account, {
-      email = "aws+mp+${random_string.email-address[account.name].result}@digital.justice.gov.uk"
+      email = "aws+${random_string.email-address[account.name].result}@digital.justice.gov.uk"
     })
   }
   name                       = each.value.name
