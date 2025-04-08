@@ -5,6 +5,10 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    groups:
+      action-dependencies:
+        patterns:
+          - "*"
   - package-ecosystem: "terraform"
     directory: "/"
     schedule:
