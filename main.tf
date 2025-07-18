@@ -26,27 +26,35 @@ locals {
       ]
     ])
 
-    nuke_accounts = flatten([
-      for application in local.definitions : [
-        for environment in application.environments :
-        "${application.name}-${environment.name}"
-        if application.account-type == "member"
-        && environment.name == "development"
-        && contains([for a in try(environment.access, []) : try(a.level, "undefined")], "sandbox")
-        && try(environment.nuke, "include") != "exclude"
-      ]
-    ])
+    nuke_accounts = distinct(concat(
+      flatten([
+        for application in local.definitions : [
+          for environment in application.environments :
+          "${application.name}-${environment.name}"
+          if application.account-type == "member"
+          && environment.name == "development"
+          && contains([for a in try(environment.access, []) : try(a.level, "undefined")], "sandbox")
+          && try(environment.nuke, "include") != "exclude"
+        ]
+      ]),
+      # adds our internal testing accounts which do not have sandpit access but require nuking.
+      ["example-development", "testing-test"]
+    ))
 
-    rebuild_after_nuke_accounts = flatten([
-      for application in local.definitions : [
-        for environment in application.environments :
-        "${application.name}-${environment.name}"
-        if application.account-type == "member"
-        && environment.name == "development"
-        && contains([for a in try(environment.access, []) : try(a.level, "undefined")], "sandbox")
-        && try(environment.nuke, "include") == "rebuild"
-      ]
-    ])
+    rebuild_after_nuke_accounts = distinct(concat(
+      flatten([
+        for application in local.definitions : [
+          for environment in application.environments :
+          "${application.name}-${environment.name}"
+          if application.account-type == "member"
+          && environment.name == "development"
+          && contains([for a in try(environment.access, []) : try(a.level, "undefined")], "sandbox")
+          && try(environment.nuke, "include") == "rebuild"
+        ]
+      ]),
+      # adds our internal testing accounts which do not have sandpit access but require nuking/rebuilding.
+      ["sprinkler-development"]
+    ))
 
     blocklist_nuke_accounts = flatten([
       for application in local.definitions : [
