@@ -38,7 +38,7 @@ locals {
         ]
       ]),
       # adds our internal testing accounts which do not have sandpit access but require nuking.
-      ["example-development", "testing-test"]
+      ["example-development", "testing-test", "sprinkler-development"]
     ))
 
     rebuild_after_nuke_accounts = distinct(concat(
