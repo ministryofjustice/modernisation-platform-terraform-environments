@@ -43,18 +43,3 @@ updates:
         update-types:
           - "minor"
           - "patch"
-
-  - package-ecosystem: "gomod"
-    directory: "/test"
-    schedule:
-      interval: "monthly"
-    cooldown:
-      default-days: 7
-    groups:
-      gomod-major:
-        update-types:
-          - "major"
-      gomod-minor-patch:
-        update-types:
-          - "minor"
-          - "patch"
